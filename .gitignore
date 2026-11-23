@@ -1,0 +1,14 @@
+.env
+.env.uyaras
+.next/
+*.tsbuildinfo
+backups/
+.venv/
+__pycache__/
+.pytest_cache/
+studio-demo.sqlite3*
+commerce.sqlite3*
+tmp/
+node_modules/
+test-results/
+playwright-report/

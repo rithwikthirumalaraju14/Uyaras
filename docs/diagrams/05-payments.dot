@@ -1,0 +1,22 @@
+digraph G {
+graph [rankdir=LR,bgcolor="white",nodesep=.25,ranksep=.58,pad=.2];
+node [shape=plain,fontname="DejaVu Sans"];
+edge [color="#647a83",arrowsize=.65];
+order_header [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>order_header</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">total, currency</TD></TR></TABLE>>];
+payment_attempt [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>payment_attempt</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">order_id FK</TD></TR><TR><TD ALIGN="LEFT">provider, provider_ref</TD></TR><TR><TD ALIGN="LEFT">amount, state, attempt_no</TD></TR></TABLE>>];
+provider_transaction [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>provider_transaction</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">attempt_id FK</TD></TR><TR><TD ALIGN="LEFT">provider, external_id UQ*</TD></TR><TR><TD ALIGN="LEFT">amount, currency, at</TD></TR></TABLE>>];
+webhook_event [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>webhook_event</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">provider, external_id UQ*</TD></TR><TR><TD ALIGN="LEFT">kind, payload_digest</TD></TR><TR><TD ALIGN="LEFT">state, received_at, processed_at</TD></TR></TABLE>>];
+refund [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>refund</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">attempt_id FK nullable</TD></TR><TR><TD ALIGN="LEFT">cod_collection_id FK nullable</TD></TR><TR><TD ALIGN="LEFT">return_id FK nullable</TD></TR><TR><TD ALIGN="LEFT">amount, reason, state</TD></TR><TR><TD ALIGN="LEFT">provider_ref, at</TD></TR></TABLE>>];
+cod_collection [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>cod_collection</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">order_id FK</TD></TR><TR><TD ALIGN="LEFT">amount_due, collected</TD></TR><TR><TD ALIGN="LEFT">remitted, carrier_ref, state</TD></TR></TABLE>>];
+settlement_line [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>settlement_line</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">attempt_id FK nullable</TD></TR><TR><TD ALIGN="LEFT">cod_collection_id FK nullable</TD></TR><TR><TD ALIGN="LEFT">external_ref, amount, date</TD></TR></TABLE>>];
+return_request [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>return_request</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">order_id FK</TD></TR></TABLE>>];
+payment_attempt -> order_header [taillabel="0..*", labeldistance=1.8, fontsize=8];
+provider_transaction -> payment_attempt [taillabel="0..*", labeldistance=1.8, fontsize=8];
+refund -> payment_attempt [taillabel="0..*", labeldistance=1.8, fontsize=8];
+refund -> cod_collection [taillabel="0..*", labeldistance=1.8, fontsize=8];
+refund -> return_request [taillabel="0..*", labeldistance=1.8, fontsize=8];
+return_request -> order_header [taillabel="0..*", labeldistance=1.8, fontsize=8];
+cod_collection -> order_header [taillabel="0..*", labeldistance=1.8, fontsize=8];
+settlement_line -> payment_attempt [taillabel="0..*", labeldistance=1.8, fontsize=8];
+settlement_line -> cod_collection [taillabel="0..*", labeldistance=1.8, fontsize=8];
+}

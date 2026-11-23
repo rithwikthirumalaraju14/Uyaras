@@ -1,0 +1,28 @@
+digraph G {
+graph [rankdir=LR,bgcolor="white",nodesep=.25,ranksep=.58,pad=.2];
+node [shape=plain,fontname="DejaVu Sans"];
+edge [color="#647a83",arrowsize=.65];
+user_account [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>user_account</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR></TABLE>>];
+variant [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>variant</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">sku UQ</TD></TR></TABLE>>];
+cart [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>cart</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">user_id FK nullable</TD></TR><TR><TD ALIGN="LEFT">anonymous_token_hash UQ</TD></TR><TR><TD ALIGN="LEFT">state, version</TD></TR></TABLE>>];
+cart_item [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>cart_item</B></FONT></TD></TR><TR><TD ALIGN="LEFT">cart_id PK FK</TD></TR><TR><TD ALIGN="LEFT">variant_id PK FK</TD></TR><TR><TD ALIGN="LEFT">quantity</TD></TR></TABLE>>];
+order_header [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>order_header</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">user_id FK</TD></TR><TR><TD ALIGN="LEFT">source_cart_id FK</TD></TR><TR><TD ALIGN="LEFT">state, currency</TD></TR><TR><TD ALIGN="LEFT">subtotal, tax, discount</TD></TR><TR><TD ALIGN="LEFT">shipping, cod_fee, total</TD></TR></TABLE>>];
+order_item [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>order_item</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">order_id FK</TD></TR><TR><TD ALIGN="LEFT">variant_id FK</TD></TR><TR><TD ALIGN="LEFT">sku, name, size, colour</TD></TR><TR><TD ALIGN="LEFT">unit_price, qty, discount, tax</TD></TR></TABLE>>];
+order_address [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>order_address</B></FONT></TD></TR><TR><TD ALIGN="LEFT">order_id PK FK</TD></TR><TR><TD ALIGN="LEFT">recipient, phone</TD></TR><TR><TD ALIGN="LEFT">lines, city, state, pin</TD></TR></TABLE>>];
+order_event [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>order_event</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">order_id FK</TD></TR><TR><TD ALIGN="LEFT">from_state, to_state</TD></TR><TR><TD ALIGN="LEFT">actor, source, ref, at</TD></TR></TABLE>>];
+promotion [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>promotion</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">code UQ</TD></TR><TR><TD ALIGN="LEFT">window, eligibility</TD></TR><TR><TD ALIGN="LEFT">limits, stacking_rule</TD></TR></TABLE>>];
+redemption [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>redemption</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">promotion_id FK</TD></TR><TR><TD ALIGN="LEFT">order_id FK</TD></TR><TR><TD ALIGN="LEFT">user_id FK</TD></TR><TR><TD ALIGN="LEFT">amount</TD></TR></TABLE>>];
+idempotency_record [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>idempotency_record</B></FONT></TD></TR><TR><TD ALIGN="LEFT">principal_id PK</TD></TR><TR><TD ALIGN="LEFT">operation PK</TD></TR><TR><TD ALIGN="LEFT">key PK</TD></TR><TR><TD ALIGN="LEFT">request_hash</TD></TR><TR><TD ALIGN="LEFT">resource_id, response_code</TD></TR></TABLE>>];
+cart -> user_account [taillabel="0..*", labeldistance=1.8, fontsize=8];
+cart_item -> cart [taillabel="0..*", labeldistance=1.8, fontsize=8];
+cart_item -> variant [taillabel="0..*", labeldistance=1.8, fontsize=8];
+order_header -> cart [taillabel="0..*", labeldistance=1.8, fontsize=8];
+order_header -> user_account [taillabel="0..*", labeldistance=1.8, fontsize=8];
+order_item -> order_header [taillabel="0..*", labeldistance=1.8, fontsize=8];
+order_item -> variant [taillabel="0..*", labeldistance=1.8, fontsize=8];
+order_address -> order_header [taillabel="0..1", labeldistance=1.8, fontsize=8];
+order_event -> order_header [taillabel="0..*", labeldistance=1.8, fontsize=8];
+redemption -> promotion [taillabel="0..*", labeldistance=1.8, fontsize=8];
+redemption -> order_header [taillabel="0..*", labeldistance=1.8, fontsize=8];
+redemption -> user_account [taillabel="0..*", labeldistance=1.8, fontsize=8];
+}

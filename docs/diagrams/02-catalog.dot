@@ -1,0 +1,26 @@
+digraph G {
+graph [rankdir=LR,bgcolor="white",nodesep=.25,ranksep=.58,pad=.2];
+node [shape=plain,fontname="DejaVu Sans"];
+edge [color="#647a83",arrowsize=.65];
+product [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>product</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">slug UQ</TD></TR><TR><TD ALIGN="LEFT">name, description, status</TD></TR><TR><TD ALIGN="LEFT">fabric, care, seo</TD></TR><TR><TD ALIGN="LEFT">size_guide_id FK nullable</TD></TR></TABLE>>];
+category [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>category</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">parent_id FK nullable</TD></TR><TR><TD ALIGN="LEFT">slug UQ</TD></TR><TR><TD ALIGN="LEFT">name, is_published</TD></TR></TABLE>>];
+product_category [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>product_category</B></FONT></TD></TR><TR><TD ALIGN="LEFT">product_id PK FK</TD></TR><TR><TD ALIGN="LEFT">category_id PK FK</TD></TR></TABLE>>];
+collection [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>collection</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">slug UQ</TD></TR><TR><TD ALIGN="LEFT">title, visibility</TD></TR></TABLE>>];
+collection_product [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>collection_product</B></FONT></TD></TR><TR><TD ALIGN="LEFT">collection_id PK FK</TD></TR><TR><TD ALIGN="LEFT">product_id PK FK</TD></TR><TR><TD ALIGN="LEFT">display_rank</TD></TR></TABLE>>];
+variant [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>variant</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">product_id FK</TD></TR><TR><TD ALIGN="LEFT">sku UQ</TD></TR><TR><TD ALIGN="LEFT">size_label, colour_label</TD></TR><TR><TD ALIGN="LEFT">unit_price_paise, is_active</TD></TR></TABLE>>];
+media_asset [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>media_asset</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">product_id FK</TD></TR><TR><TD ALIGN="LEFT">variant_id FK nullable</TD></TR><TR><TD ALIGN="LEFT">object_key UQ, alt_text</TD></TR><TR><TD ALIGN="LEFT">display_rank</TD></TR></TABLE>>];
+size_guide [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>size_guide</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">title, units</TD></TR><TR><TD ALIGN="LEFT">measurements, revision</TD></TR></TABLE>>];
+product_attribute [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>product_attribute</B></FONT></TD></TR><TR><TD ALIGN="LEFT">product_id PK FK</TD></TR><TR><TD ALIGN="LEFT">attribute_id PK FK</TD></TR><TR><TD ALIGN="LEFT">value</TD></TR></TABLE>>];
+attribute [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>attribute</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">key UQ</TD></TR><TR><TD ALIGN="LEFT">label, type</TD></TR></TABLE>>];
+product -> size_guide [taillabel="0..*", labeldistance=1.8, fontsize=8];
+category -> category [taillabel="0..*", labeldistance=1.8, fontsize=8];
+product_category -> product [taillabel="0..*", labeldistance=1.8, fontsize=8];
+product_category -> category [taillabel="0..*", labeldistance=1.8, fontsize=8];
+collection_product -> collection [taillabel="0..*", labeldistance=1.8, fontsize=8];
+collection_product -> product [taillabel="0..*", labeldistance=1.8, fontsize=8];
+variant -> product [taillabel="0..*", labeldistance=1.8, fontsize=8];
+media_asset -> product [taillabel="0..*", labeldistance=1.8, fontsize=8];
+media_asset -> variant [taillabel="0..*", labeldistance=1.8, fontsize=8];
+product_attribute -> product [taillabel="0..*", labeldistance=1.8, fontsize=8];
+product_attribute -> attribute [taillabel="0..*", labeldistance=1.8, fontsize=8];
+}

@@ -1,0 +1,49 @@
+name: Uyaras V1
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: uyaras
+          POSTGRES_PASSWORD: test_only
+          POSTGRES_DB: uyaras
+        ports: ['5432:5432']
+        options: --health-cmd 'pg_isready -U uyaras' --health-interval 3s --health-timeout 3s --health-retries 20
+    env:
+      UYARAS_DATABASE_URL: postgresql+psycopg://uyaras:test_only@127.0.0.1:5432/uyaras
+      PYTHONPATH: backend
+      APP_ENV: development
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: pip install -r backend/requirements.txt -r requirements-dev.txt
+      - run: python -m alembic -c backend/alembic.ini upgrade head
+      - run: python -m uyaras.manage seed
+      - run: pytest backend/tests -q
+      - run: npm ci --prefix frontend
+      - run: npm run lint --prefix frontend
+      - run: npm run build --prefix frontend
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: mkdir -p tmp && python scripts/browser-test.py
+      - run: docker build -f Dockerfile.uyaras -t uyaras-api:local .
+      - run: docker build -f frontend/Dockerfile -t uyaras-frontend:local .
+      - run: python scripts/container-smoke.py
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-failure-details
+          path: test-results/

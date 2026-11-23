@@ -1,0 +1,14 @@
+{
+  "regions_considered": ["Andhra Pradesh", "Telangana"],
+  "confirmed_pins": [],
+  "shipping_fee_paise": null,
+  "cod_eligible": null,
+  "ordering_enabled": false,
+  "sizes": ["S", "M", "L", "XL"],
+  "products": [
+    {"id":"M01","audience":"Men","name":"Everyday crew","fit":"Regular fit","shape":"regular","note":"A straight-cut T-shirt with a classic crew neck.","example_price":399,"background":"#dbe3dc","colours":[["Pine","#365748"],["Chalk","#efe8d6"]]},
+    {"id":"W01","audience":"Women","name":"Boxy pocket tee","fit":"Boxy fit","shape":"boxy","note":"A shorter, boxy silhouette with a small chest pocket.","example_price":449,"background":"#eedbd1","colours":[["Terracotta","#ac5942"],["Ink","#353748"]]},
+    {"id":"M02","audience":"Men","name":"Dropped shoulder tee","fit":"Oversized fit","shape":"oversized","note":"A roomy body with a lower shoulder seam and longer sleeves.","example_price":499,"background":"#d9e2e7","colours":[["Atlantic","#455f78"],["Slate","#4c5153"]]},
+    {"id":"W02","audience":"Women","name":"Everyday rib tee","fit":"Slim fit","shape":"rib","note":"A close-fitting crew neck with a fine ribbed texture.","example_price":399,"background":"#e8e0d5","colours":[["Cocoa","#715247"],["Moss","#5f6650"]]}
+  ]
+}

@@ -1,0 +1,2 @@
+const {defineConfig}=require('@playwright/test');
+module.exports=defineConfig({testDir:'./tests/uyaras-browser',workers:1,timeout:60000,expect:{timeout:15000},projects:[{name:'chromium',use:{browserName:'chromium'}},{name:'firefox',use:{browserName:'firefox'}},{name:'webkit',use:{browserName:'webkit'}}],use:{baseURL:process.env.UYARAS_TEST_ORIGIN || 'http://localhost:3002',screenshot:'only-on-failure',trace:'retain-on-failure'},reporter:'list'});

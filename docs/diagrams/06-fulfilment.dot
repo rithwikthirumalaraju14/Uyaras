@@ -1,0 +1,28 @@
+digraph G {
+graph [rankdir=LR,bgcolor="white",nodesep=.25,ranksep=.58,pad=.2];
+node [shape=plain,fontname="DejaVu Sans"];
+edge [color="#647a83",arrowsize=.65];
+order_header [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>order_header</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR></TABLE>>];
+order_item [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>order_item</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">order_id FK</TD></TR></TABLE>>];
+shipment [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>shipment</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">order_id FK</TD></TR><TR><TD ALIGN="LEFT">provider, tracking_ref</TD></TR><TR><TD ALIGN="LEFT">state, direction</TD></TR></TABLE>>];
+shipment_item [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>shipment_item</B></FONT></TD></TR><TR><TD ALIGN="LEFT">shipment_id PK FK</TD></TR><TR><TD ALIGN="LEFT">order_item_id PK FK</TD></TR><TR><TD ALIGN="LEFT">quantity</TD></TR></TABLE>>];
+carrier_event [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>carrier_event</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">shipment_id FK</TD></TR><TR><TD ALIGN="LEFT">provider, external_id UQ*</TD></TR><TR><TD ALIGN="LEFT">state, at</TD></TR></TABLE>>];
+serviceability_rule [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>serviceability_rule</B></FONT></TD></TR><TR><TD ALIGN="LEFT">pin PK</TD></TR><TR><TD ALIGN="LEFT">enabled, cod_enabled</TD></TR><TR><TD ALIGN="LEFT">rate_rule_id FK</TD></TR><TR><TD ALIGN="LEFT">estimated_days nullable</TD></TR></TABLE>>];
+rate_rule [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>rate_rule</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">base_fee, free_over</TD></TR><TR><TD ALIGN="LEFT">cod_fee, cod_max_total</TD></TR></TABLE>>];
+return_request [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>return_request</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">order_id FK</TD></TR><TR><TD ALIGN="LEFT">state, reason</TD></TR><TR><TD ALIGN="LEFT">return_shipment_id FK nullable</TD></TR></TABLE>>];
+return_item [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>return_item</B></FONT></TD></TR><TR><TD ALIGN="LEFT">return_id PK FK</TD></TR><TR><TD ALIGN="LEFT">order_item_id PK FK</TD></TR><TR><TD ALIGN="LEFT">qty, condition, outcome</TD></TR></TABLE>>];
+notification [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>notification</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">order_id FK</TD></TR><TR><TD ALIGN="LEFT">template_id FK</TD></TR><TR><TD ALIGN="LEFT">event_key UQ, state</TD></TR><TR><TD ALIGN="LEFT">attempt_count, next_try_at</TD></TR></TABLE>>];
+notification_template [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>notification_template</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">event, channel, version</TD></TR><TR><TD ALIGN="LEFT">template_ref</TD></TR></TABLE>>];
+order_item -> order_header [taillabel="0..*", labeldistance=1.8, fontsize=8];
+shipment -> order_header [taillabel="0..*", labeldistance=1.8, fontsize=8];
+shipment_item -> shipment [taillabel="0..*", labeldistance=1.8, fontsize=8];
+shipment_item -> order_item [taillabel="0..*", labeldistance=1.8, fontsize=8];
+carrier_event -> shipment [taillabel="0..*", labeldistance=1.8, fontsize=8];
+serviceability_rule -> rate_rule [taillabel="0..*", labeldistance=1.8, fontsize=8];
+return_request -> order_header [taillabel="0..*", labeldistance=1.8, fontsize=8];
+return_request -> shipment [taillabel="0..*", labeldistance=1.8, fontsize=8];
+return_item -> return_request [taillabel="0..*", labeldistance=1.8, fontsize=8];
+return_item -> order_item [taillabel="0..*", labeldistance=1.8, fontsize=8];
+notification -> order_header [taillabel="0..*", labeldistance=1.8, fontsize=8];
+notification -> notification_template [taillabel="0..*", labeldistance=1.8, fontsize=8];
+}

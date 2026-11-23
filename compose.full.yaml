@@ -1,0 +1,54 @@
+# Local container preview. No live providers or production orders.
+services:
+  db:
+    extends:
+      file: compose.uyaras.yaml
+      service: db
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile.uyaras
+    env_file: .env.uyaras
+    environment:
+      UYARAS_DATABASE_URL: postgresql+psycopg://uyaras:${UYARAS_DB_PASSWORD}@db:5432/uyaras
+    command: ["python","-m","alembic","-c","backend/alembic.ini","upgrade","head"]
+    depends_on:
+      db:
+        condition: service_healthy
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.uyaras
+    env_file: .env.uyaras
+    environment:
+      UYARAS_DATABASE_URL: postgresql+psycopg://uyaras:${UYARAS_DB_PASSWORD}@db:5432/uyaras
+    ports: ["127.0.0.1:8001:8001"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.uyaras
+    env_file: .env.uyaras
+    environment:
+      UYARAS_DATABASE_URL: postgresql+psycopg://uyaras:${UYARAS_DB_PASSWORD}@db:5432/uyaras
+    command: ["python","-m","uyaras.manage","worker"]
+    healthcheck:
+      disable: true
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    environment:
+      BACKEND_URL: http://api:8001
+      PUBLIC_ORIGIN: http://localhost:3000
+    ports: ["127.0.0.1:3000:3000"]
+    depends_on:
+      api:
+        condition: service_healthy
+volumes:
+  uyaras_pg:

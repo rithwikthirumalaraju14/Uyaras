@@ -1,0 +1,24 @@
+digraph G {
+graph [rankdir=LR,bgcolor="white",nodesep=.25,ranksep=.58,pad=.2];
+node [shape=plain,fontname="DejaVu Sans"];
+edge [color="#647a83",arrowsize=.65];
+user_account [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>user_account</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">email UQ</TD></TR><TR><TD ALIGN="LEFT">password_hash</TD></TR><TR><TD ALIGN="LEFT">state</TD></TR><TR><TD ALIGN="LEFT">created_at</TD></TR></TABLE>>];
+role [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>role</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">name UQ</TD></TR></TABLE>>];
+permission [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>permission</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">code UQ</TD></TR></TABLE>>];
+user_role [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>user_role</B></FONT></TD></TR><TR><TD ALIGN="LEFT">user_id PK FK</TD></TR><TR><TD ALIGN="LEFT">role_id PK FK</TD></TR></TABLE>>];
+role_permission [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>role_permission</B></FONT></TD></TR><TR><TD ALIGN="LEFT">role_id PK FK</TD></TR><TR><TD ALIGN="LEFT">permission_id PK FK</TD></TR></TABLE>>];
+customer_profile [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>customer_profile</B></FONT></TD></TR><TR><TD ALIGN="LEFT">user_id PK FK</TD></TR><TR><TD ALIGN="LEFT">display_name</TD></TR><TR><TD ALIGN="LEFT">phone</TD></TR></TABLE>>];
+address [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>address</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">user_id FK</TD></TR><TR><TD ALIGN="LEFT">recipient</TD></TR><TR><TD ALIGN="LEFT">lines, city, state</TD></TR><TR><TD ALIGN="LEFT">pin, country</TD></TR></TABLE>>];
+session [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>session</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">user_id FK</TD></TR><TR><TD ALIGN="LEFT">token_hash UQ</TD></TR><TR><TD ALIGN="LEFT">csrf_hash</TD></TR><TR><TD ALIGN="LEFT">expires_at, revoked_at</TD></TR></TABLE>>];
+password_reset [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>password_reset</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">user_id FK</TD></TR><TR><TD ALIGN="LEFT">token_hash UQ</TD></TR><TR><TD ALIGN="LEFT">expires_at, used_at</TD></TR></TABLE>>];
+audit_event [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>audit_event</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">actor_id FK nullable</TD></TR><TR><TD ALIGN="LEFT">action, target_type, target_id</TD></TR><TR><TD ALIGN="LEFT">redacted_before_after</TD></TR><TR><TD ALIGN="LEFT">source, occurred_at</TD></TR></TABLE>>];
+user_role -> user_account [taillabel="0..*", labeldistance=1.8, fontsize=8];
+user_role -> role [taillabel="0..*", labeldistance=1.8, fontsize=8];
+role_permission -> role [taillabel="0..*", labeldistance=1.8, fontsize=8];
+role_permission -> permission [taillabel="0..*", labeldistance=1.8, fontsize=8];
+customer_profile -> user_account [taillabel="0..1", labeldistance=1.8, fontsize=8];
+address -> user_account [taillabel="0..*", labeldistance=1.8, fontsize=8];
+session -> user_account [taillabel="0..*", labeldistance=1.8, fontsize=8];
+password_reset -> user_account [taillabel="0..*", labeldistance=1.8, fontsize=8];
+audit_event -> user_account [taillabel="0..*", labeldistance=1.8, fontsize=8];
+}

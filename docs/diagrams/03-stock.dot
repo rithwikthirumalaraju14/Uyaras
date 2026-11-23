@@ -1,0 +1,18 @@
+digraph G {
+graph [rankdir=LR,bgcolor="white",nodesep=.25,ranksep=.58,pad=.2];
+node [shape=plain,fontname="DejaVu Sans"];
+edge [color="#647a83",arrowsize=.65];
+variant [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>variant</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">sku UQ</TD></TR></TABLE>>];
+inventory_location [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>inventory_location</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">code UQ</TD></TR><TR><TD ALIGN="LEFT">name</TD></TR></TABLE>>];
+inventory_balance [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>inventory_balance</B></FONT></TD></TR><TR><TD ALIGN="LEFT">variant_id PK FK</TD></TR><TR><TD ALIGN="LEFT">location_id PK FK</TD></TR><TR><TD ALIGN="LEFT">on_hand, reserved</TD></TR></TABLE>>];
+stock_movement [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>stock_movement</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">variant_id, location_id FK pair</TD></TR><TR><TD ALIGN="LEFT">on_hand_delta, reserved_delta</TD></TR><TR><TD ALIGN="LEFT">reason, actor_id</TD></TR><TR><TD ALIGN="LEFT">source_event_key UQ, at</TD></TR></TABLE>>];
+reservation [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>reservation</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">order_id FK UQ</TD></TR><TR><TD ALIGN="LEFT">state, expires_at</TD></TR></TABLE>>];
+reservation_item [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>reservation_item</B></FONT></TD></TR><TR><TD ALIGN="LEFT">reservation_id PK FK</TD></TR><TR><TD ALIGN="LEFT">variant_id PK FK</TD></TR><TR><TD ALIGN="LEFT">location_id PK FK</TD></TR><TR><TD ALIGN="LEFT">quantity</TD></TR></TABLE>>];
+order_header [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0" CELLPADDING="5" BGCOLOR="#edf3f2"><TR><TD BGCOLOR="#15454c"><FONT COLOR="white"><B>order_header</B></FONT></TD></TR><TR><TD ALIGN="LEFT">id PK</TD></TR><TR><TD ALIGN="LEFT">order_state</TD></TR></TABLE>>];
+inventory_balance -> variant [taillabel="0..*", labeldistance=1.8, fontsize=8];
+inventory_balance -> inventory_location [taillabel="0..*", labeldistance=1.8, fontsize=8];
+stock_movement -> inventory_balance [taillabel="0..*", labeldistance=1.8, fontsize=8];
+reservation -> order_header [taillabel="0..1", labeldistance=1.8, fontsize=8];
+reservation_item -> reservation [taillabel="0..*", labeldistance=1.8, fontsize=8];
+reservation_item -> inventory_balance [taillabel="0..*", labeldistance=1.8, fontsize=8];
+}
